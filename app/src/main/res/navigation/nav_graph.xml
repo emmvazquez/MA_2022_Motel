@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/inicioFragment">
+
+    <fragment
+        android:id="@+id/inicioFragment"
+        android:name="com.example.motel.InicioFragment"
+        android:label="fragment_inicio"
+        tools:layout="@layout/fragment_inicio" >
+        <action
+            android:id="@+id/action_inicioFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_inicioFragment_to_motelesFragment"
+            app:destination="@id/motelesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/motelesFragment"
+        android:name="com.example.motel.MotelesFragment"
+        android:label="fragment_moteles"
+        tools:layout="@layout/fragment_moteles" >
+        <action
+            android:id="@+id/action_motelesFragment_to_pueblaCapitalFragment"
+            app:destination="@id/pueblaCapitalFragment" />
+        <action
+            android:id="@+id/action_motelesFragment_to_tehuacanFragment"
+            app:destination="@id/tehuacanFragment" />
+        <action
+            android:id="@+id/action_motelesFragment_to_ciudadCerdanFragment"
+            app:destination="@id/ciudadCerdanFragment" />
+        <action
+            android:id="@+id/action_motelesFragment_to_teziutlanFragment"
+            app:destination="@id/teziutlanFragment" />
+        <action
+            android:id="@+id/action_motelesFragment_to_huauchinangoFragment"
+            app:destination="@id/huauchinangoFragment" />
+        <action
+            android:id="@+id/action_motelesFragment_to_cholulaFragment"
+            app:destination="@id/cholulaFragment" />
+        <action
+            android:id="@+id/action_motelesFragment_to_izucarMatamorosFragment"
+            app:destination="@id/izucarMatamorosFragment" />
+        <action
+            android:id="@+id/action_motelesFragment_to_todosMotelesFragment"
+            app:destination="@id/todosMotelesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.motel.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registrarseFragment"
+            app:destination="@id/registrarseFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_formularioMotelFragment"
+            app:destination="@id/formularioMotelFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrarseFragment"
+        android:name="com.example.motel.RegistrarseFragment"
+        android:label="fragment_registrarse"
+        tools:layout="@layout/fragment_registrarse" />
+    <fragment
+        android:id="@+id/pueblaCapitalFragment"
+        android:name="com.example.motel.PueblaCapitalFragment"
+        android:label="fragment_puebla_capital"
+        tools:layout="@layout/fragment_puebla_capital" />
+    <fragment
+        android:id="@+id/tehuacanFragment"
+        android:name="com.example.motel.TehuacanFragment"
+        android:label="fragment_tehuacan"
+        tools:layout="@layout/fragment_tehuacan" />
+    <fragment
+        android:id="@+id/ciudadCerdanFragment"
+        android:name="com.example.motel.CiudadCerdanFragment"
+        android:label="fragment_ciudad_cerdan"
+        tools:layout="@layout/fragment_ciudad_cerdan" />
+    <fragment
+        android:id="@+id/teziutlanFragment"
+        android:name="com.example.motel.TeziutlanFragment"
+        android:label="fragment_teziutlan"
+        tools:layout="@layout/fragment_teziutlan" />
+    <fragment
+        android:id="@+id/huauchinangoFragment"
+        android:name="com.example.motel.HuauchinangoFragment"
+        android:label="fragment_huauchinango"
+        tools:layout="@layout/fragment_huauchinango" />
+    <fragment
+        android:id="@+id/cholulaFragment"
+        android:name="com.example.motel.CholulaFragment"
+        android:label="fragment_cholula"
+        tools:layout="@layout/fragment_cholula" />
+    <fragment
+        android:id="@+id/izucarMatamorosFragment"
+        android:name="com.example.motel.IzucarMatamorosFragment"
+        android:label="fragment_izucar_matamoros"
+        tools:layout="@layout/fragment_izucar_matamoros" />
+    <fragment
+        android:id="@+id/todosMotelesFragment"
+        android:name="com.example.motel.TodosMotelesFragment"
+        android:label="fragment_todos_moteles"
+        tools:layout="@layout/fragment_todos_moteles" />
+    <fragment
+        android:id="@+id/formularioMotelFragment"
+        android:name="com.example.motel.FormularioMotelFragment"
+        android:label="fragment_formulario_motel"
+        tools:layout="@layout/fragment_formulario_motel" />
+</navigation>
