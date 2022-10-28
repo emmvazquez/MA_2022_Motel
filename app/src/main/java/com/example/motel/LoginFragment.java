@@ -1,5 +1,6 @@
 package com.example.motel;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,53 +12,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginFragment extends Fragment {
+    EditText etusuario, etclave;
+    String u,c;
+    Button btniniciarsesion, btnregistrate;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public LoginFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    ProgressDialog progressDialog;
+    RequestQueue requestQueue;
+    String HttpURI = "http://192.168.8.92/motel/apiiniciarsesion.php";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,21 +49,81 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button btnIniciarSesion = view.findViewById(R.id.btniniciarsesion);
-        Button btnregistrousuarios = view.findViewById(R.id.btnregistrousuarios);
+        etusuario = (EditText) view.findViewById(R.id.idetUsuario);
+        etclave = (EditText) view.findViewById(R.id.idetClave);
+        btniniciarsesion = (Button) view.findViewById(R.id.btniniciarsesion);
+        btnregistrate = (Button) view.findViewById(R.id.btnregistrousuarios);
 
-        btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
+        requestQueue = Volley.newRequestQueue(getActivity());
+        progressDialog = new ProgressDialog(getActivity());
+
+        btniniciarsesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_formularioMotelFragment);
+                Login();
             }
         });
-        btnregistrousuarios.setOnClickListener(new View.OnClickListener() {
+
+        btnregistrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registrarseFragment);
             }
         });
+    }
+
+    private void Login() {
+        u = etusuario.getText().toString();
+        c = etclave.getText().toString();
+
+        if(u.isEmpty() || c.isEmpty())
+            Toast.makeText(getActivity(),"Debes introducir los dos campos",
+                    Toast.LENGTH_LONG).show();
+        else{
+            progressDialog.setMessage("Procesando...");
+            progressDialog.show();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpURI,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String serverResponse) {
+                            progressDialog.dismiss();
+                            try {
+                                JSONObject obj = new JSONObject(serverResponse);
+                                Boolean error = obj.getBoolean("error");
+                                String mensaje = obj.getString("mensaje");
+                                
+                                if (error == true)
+                                    Toast.makeText(getActivity(), mensaje,
+                                            Toast.LENGTH_SHORT).show();
+                                else {
+                                    Toast.makeText(getActivity(), "Acceso correcto",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }catch (JSONException e){
+                                e.printStackTrace();
+
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getActivity(),error.toString(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+            }){
+            protected Map<String,String> getParams(){
+                Map<String,String> parametros = new HashMap<>();
+                parametros.put("usuario", u);
+                parametros.put("clave", c);
+                parametros.put("opcion","login");
+                return parametros;
+            }
+            };
+            requestQueue.add(stringRequest);
+        }
     }
 
 }

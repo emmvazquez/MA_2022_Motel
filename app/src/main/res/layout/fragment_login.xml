@@ -61,7 +61,7 @@
                     android:textColor="#023859">
                 </TextView>
                 <EditText
-                    android:id="@+id/idCorreoElectronico"
+                    android:id="@+id/idetUsuario"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
@@ -83,7 +83,7 @@
                     android:textColor="#023859">
                 </TextView>
                 <EditText
-                    android:id="@+id/idContraseña"
+                    android:id="@+id/idetClave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"

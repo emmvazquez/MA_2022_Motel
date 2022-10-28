@@ -73,7 +73,7 @@ public class RegistrarseFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(view.getContext(),error.toString(),
-                                Toast.LENGTH_LONG).show();
+                                Toast.LENGTH_LONG). show();
                     }
                 }
                 );

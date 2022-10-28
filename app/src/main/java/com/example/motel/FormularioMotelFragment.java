@@ -67,7 +67,7 @@ public class FormularioMotelFragment extends Fragment {
                 String sTelefono = telefono.getText().toString();
                 String sPaginaweb = paginaweb.getText().toString();
 
-                String url = "http://172.16.20.243/motel/apiregistromotel.php?nombre="
+                String url = "http://192.168.8.92/motel/apiregistromotel.php?nombre="
                         +sNombre+"&region="+sRegion+"&municipio="+sMunicipio+"&direccion="
                         +sDireccion+"&precios="+sPrecios+"&horarios="+sHorarios+"&servicios="
                         +sServicios+"&telefono="+sTelefono+"&paginaweb="+sPaginaweb;
