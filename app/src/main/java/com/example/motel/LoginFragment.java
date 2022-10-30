@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,7 @@ public class LoginFragment extends Fragment {
         btniniciarsesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Login();
+                Validar();
             }
         });
 
@@ -70,6 +71,25 @@ public class LoginFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registrarseFragment);
             }
         });
+    }
+
+    private void Validar() {
+        etusuario.setError(null);
+        etclave.setError(null);
+        u = etusuario.getText().toString();
+        c = etclave.getText().toString();
+
+        if(TextUtils.isEmpty(u)){
+            etusuario.setError(getString(R.string.error_campo_obligatorio));
+            etusuario.requestFocus();
+            return;
+        }
+        if(TextUtils.isEmpty(c)){
+            etclave.setError(getString(R.string.error_campo_obligatorio));
+            etclave.requestFocus();
+            return;
+        }
+        Login();
     }
 
     private void Login() {
@@ -102,7 +122,6 @@ public class LoginFragment extends Fragment {
                                 }
                             }catch (JSONException e){
                                 e.printStackTrace();
-
                             }
                         }
                     },
@@ -125,5 +144,4 @@ public class LoginFragment extends Fragment {
             requestQueue.add(stringRequest);
         }
     }
-
 }
