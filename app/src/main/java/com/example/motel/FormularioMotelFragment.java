@@ -67,30 +67,83 @@ public class FormularioMotelFragment extends Fragment {
                 String sTelefono = telefono.getText().toString();
                 String sPaginaweb = paginaweb.getText().toString();
 
-                String url = "http://192.168.8.92/motel/apiregistromotel.php?nombre="
-                        +sNombre+"&region="+sRegion+"&municipio="+sMunicipio+"&direccion="
-                        +sDireccion+"&precios="+sPrecios+"&horarios="+sHorarios+"&servicios="
-                        +sServicios+"&telefono="+sTelefono+"&paginaweb="+sPaginaweb;
+                if(sNombre.isEmpty()){
+                    nombre.setError(getString(R.string.error_campo_obligatorio));
+                    nombre.requestFocus();
+                    Toast.makeText(getActivity(),"Ingresa tu nombre completo", Toast.LENGTH_LONG).show();
+                }else{
+                    if (sRegion.isEmpty()){
+                        region.setError(getString(R.string.error_campo_obligatorio));
+                        region.requestFocus();
+                        Toast.makeText(getActivity(),"Ingresa una region", Toast.LENGTH_LONG).show();
+                    }else {
+                        if (sMunicipio.isEmpty()) {
+                            municipio.setError(getString(R.string.error_campo_obligatorio));
+                            municipio.requestFocus();
+                            Toast.makeText(getActivity(), "Ingresa un municipio", Toast.LENGTH_LONG).show();
+                        } else {
+                            if (sDireccion.isEmpty()) {
+                                direccion.setError(getString(R.string.error_campo_obligatorio));
+                                direccion.requestFocus();
+                                Toast.makeText(getActivity(), "Ingresa una direccion", Toast.LENGTH_LONG).show();
+                            } else {
+                                if (sPrecios.isEmpty()) {
+                                    precios.setError(getString(R.string.error_campo_obligatorio));
+                                    precios.requestFocus();
+                                    Toast.makeText(getActivity(), "Ingresa una direccion", Toast.LENGTH_LONG).show();
+                                } else {
+                                    if (sHorarios.isEmpty()) {
+                                        horarios.setError(getString(R.string.error_campo_obligatorio));
+                                        horarios.requestFocus();
+                                        Toast.makeText(getActivity(), "Ingresa los horarios", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        if (sServicios.isEmpty()) {
+                                            servicios.setError(getString(R.string.error_campo_obligatorio));
+                                            servicios.requestFocus();
+                                            Toast.makeText(getActivity(), "Ingresa los horarios", Toast.LENGTH_LONG).show();
+                                        } else {
+                                            if (sTelefono.isEmpty()) {
+                                                telefono.setError(getString(R.string.error_campo_obligatorio));
+                                                telefono.requestFocus();
+                                                Toast.makeText(getActivity(), "Ingresa un numero de telefono", Toast.LENGTH_LONG).show();
+                                            } else {
+                                                if (sPaginaweb.isEmpty()) {
+                                                    paginaweb.setError(getString(R.string.error_campo_obligatorio));
+                                                    paginaweb.requestFocus();
+                                                    Toast.makeText(getActivity(), "Ingresa una pagina web", Toast.LENGTH_LONG).show();
+                                                } else {
+                                                    String url = "https://motelesdepuebla.000webhostapp.com/apiregistromotel.php?nombre="
+                                                            + sNombre + "&region=" + sRegion + "&municipio=" + sMunicipio + "&direccion="
+                                                            + sDireccion + "&precios=" + sPrecios + "&horarios=" + sHorarios + "&servicios="
+                                                            + sServicios + "&telefono=" + sTelefono + "&paginaweb=" + sPaginaweb;
 
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                        Request.Method.GET, url, null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Toast.makeText(view.getContext(), response.toString(),
-                                        Toast.LENGTH_LONG).show();
+                                                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                                                            Request.Method.GET, url, null,
+                                                            new Response.Listener<JSONObject>() {
+                                                                @Override
+                                                                public void onResponse(JSONObject response) {
+                                                                    Toast.makeText(view.getContext(), response.toString(),
+                                                                            Toast.LENGTH_LONG).show();
+                                                                }
+                                                            }, new Response.ErrorListener() {
+                                                        @Override
+                                                        public void onErrorResponse(VolleyError error) {
+                                                            Toast.makeText(view.getContext(), error.toString(),
+                                                                    Toast.LENGTH_LONG).show();
+                                                        }
+                                                    }
+                                                    );
+                                                    queue.add(jsonObjectRequest);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(view.getContext(),error.toString(),
-                                Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
-                );
-                queue.add(jsonObjectRequest);
             }
-        });
-
-    }
+   });
+}
 }

@@ -63,7 +63,11 @@
         android:id="@+id/registrarseFragment"
         android:name="com.example.motel.RegistrarseFragment"
         android:label="fragment_registrarse"
-        tools:layout="@layout/fragment_registrarse" />
+        tools:layout="@layout/fragment_registrarse" >
+        <action
+            android:id="@+id/action_registrarseFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
     <fragment
         android:id="@+id/pueblaCapitalFragment"
         android:name="com.example.motel.PueblaCapitalFragment"

@@ -32,12 +32,11 @@ import java.util.Map;
 
 public class LoginFragment extends Fragment {
     EditText etusuario, etclave;
-    String u,c;
+    String sUsuario,sClave;
     Button btniniciarsesion, btnregistrate;
-
     ProgressDialog progressDialog;
     RequestQueue requestQueue;
-    String HttpURI = "http://192.168.8.92/motel/apiiniciarsesion.php";
+    String HttpURI = "https://motelesdepuebla.000webhostapp.com/apiiniciarsesion.php";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,7 +60,64 @@ public class LoginFragment extends Fragment {
         btniniciarsesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Validar();
+
+                sUsuario = etusuario.getText().toString();
+                sClave = etclave.getText().toString();
+
+                if(sUsuario.isEmpty()){
+                    etusuario.setError(getString(R.string.error_campo_obligatorio));
+                    etusuario.requestFocus();
+                } else{
+                    if (sClave.isEmpty()){
+                        etclave.setError(getString(R.string.error_campo_obligatorio));
+                        etclave.requestFocus();
+                    }else{
+                        progressDialog.setMessage("Procesando...");
+                        progressDialog.show();
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpURI,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String serverResponse) {
+                                        progressDialog.dismiss();
+                                        try {
+                                            JSONObject obj = new JSONObject(serverResponse);
+                                            Boolean error = obj.getBoolean("error");
+                                            String mensaje = obj.getString("mensaje");
+
+                                            if (error == true)
+                                                Toast.makeText(getActivity(), mensaje,
+                                                        Toast.LENGTH_SHORT).show();
+                                            else {
+                                                Toast.makeText(getActivity(), "Acceso correcto",
+                                                        Toast.LENGTH_SHORT).show();
+                                                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_formularioMotelFragment);
+                                            }
+                                        }catch (JSONException e){
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getActivity(),error.toString(),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }){
+                            protected Map<String,String> getParams(){
+                                Map<String,String> parametros = new HashMap<>();
+                                parametros.put("usuario", sUsuario);
+                                parametros.put("clave", sClave);
+                                parametros.put("opcion","login");
+                                return parametros;
+                            }
+                        };
+                        requestQueue.add(stringRequest);
+
+                    }
+                }
+
             }
         });
 
@@ -71,77 +127,5 @@ public class LoginFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registrarseFragment);
             }
         });
-    }
-
-    private void Validar() {
-        etusuario.setError(null);
-        etclave.setError(null);
-        u = etusuario.getText().toString();
-        c = etclave.getText().toString();
-
-        if(TextUtils.isEmpty(u)){
-            etusuario.setError(getString(R.string.error_campo_obligatorio));
-            etusuario.requestFocus();
-            return;
-        }
-        if(TextUtils.isEmpty(c)){
-            etclave.setError(getString(R.string.error_campo_obligatorio));
-            etclave.requestFocus();
-            return;
-        }
-        Login();
-    }
-
-    private void Login() {
-        u = etusuario.getText().toString();
-        c = etclave.getText().toString();
-
-        if(u.isEmpty() || c.isEmpty())
-            Toast.makeText(getActivity(),"Debes introducir los dos campos",
-                    Toast.LENGTH_LONG).show();
-        else{
-            progressDialog.setMessage("Procesando...");
-            progressDialog.show();
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, HttpURI,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String serverResponse) {
-                            progressDialog.dismiss();
-                            try {
-                                JSONObject obj = new JSONObject(serverResponse);
-                                Boolean error = obj.getBoolean("error");
-                                String mensaje = obj.getString("mensaje");
-                                
-                                if (error == true)
-                                    Toast.makeText(getActivity(), mensaje,
-                                            Toast.LENGTH_SHORT).show();
-                                else {
-                                    Toast.makeText(getActivity(), "Acceso correcto",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }catch (JSONException e){
-                                e.printStackTrace();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            progressDialog.dismiss();
-                            Toast.makeText(getActivity(),error.toString(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-            }){
-            protected Map<String,String> getParams(){
-                Map<String,String> parametros = new HashMap<>();
-                parametros.put("usuario", u);
-                parametros.put("clave", c);
-                parametros.put("opcion","login");
-                return parametros;
-            }
-            };
-            requestQueue.add(stringRequest);
-        }
     }
 }

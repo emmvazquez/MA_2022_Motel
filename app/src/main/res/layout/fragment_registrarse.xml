@@ -98,6 +98,8 @@
                     android:textColor="@color/black"
                     android:padding="10dp"
                     android:singleLine="true"
+                    android:password="true"
+                    android:inputType="textPassword"
                     android:drawableStart="@drawable/contrasena"
                     android:background="@drawable/cuadro_formulario">
                 </EditText>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import org.json.JSONObject;
 public class RegistrarseFragment extends Fragment {
     EditText nombrecompleto, usuario, clave, correoelectronico, telefono;
     Button RegistrarUsuario;
+    String sNombrecompleto,sUsuario, sClave,sCorreoelectronico,sTelefono;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,32 +54,64 @@ public class RegistrarseFragment extends Fragment {
         RegistrarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String sNombrecompleto = nombrecompleto.getText().toString();
-                String sUsuario = usuario.getText().toString();
-                String sClave = clave.getText().toString();
-                String sCorreoelectronico = correoelectronico.getText().toString();
-                String sTelefono = telefono.getText().toString();
+                 sNombrecompleto = nombrecompleto.getText().toString();
+                 sUsuario = usuario.getText().toString();
+                 sClave = clave.getText().toString();
+                 sCorreoelectronico = correoelectronico.getText().toString();
+                 sTelefono = telefono.getText().toString();
 
-                String url = "http://192.168.8.92/motel/apiregistrousuario.php?nombrecompleto="
-                        + sNombrecompleto + "&usuario=" + sUsuario + "&clave=" + sClave + "&correoelectronico="
-                        + sCorreoelectronico + "&telefono=" + sTelefono;
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                        Request.Method.GET, url, null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Toast.makeText(view.getContext(), response.toString(),
-                                        Toast.LENGTH_LONG).show();
+                if(sNombrecompleto.isEmpty()){
+                    nombrecompleto.setError(getString(R.string.error_campo_obligatorio));
+                    nombrecompleto.requestFocus();
+                    Toast.makeText(getActivity(),"Ingresa tu nombre completo", Toast.LENGTH_LONG).show();
+                }else{
+                    if (sUsuario.isEmpty()){
+                        usuario.setError(getString(R.string.error_campo_obligatorio));
+                        usuario.requestFocus();
+                        Toast.makeText(getActivity(),"Ingresa un usuario", Toast.LENGTH_LONG).show();
+                    }else{
+                        if (sClave.isEmpty()){
+                            clave.setError(getString(R.string.error_campo_obligatorio));
+                            clave.requestFocus();
+                            Toast.makeText(getActivity(),"Ingresa una contraseña", Toast.LENGTH_LONG).show();
+                        }else{
+                            if (sCorreoelectronico.isEmpty()){
+                                correoelectronico.setError(getString(R.string.error_campo_obligatorio));
+                                correoelectronico.requestFocus();
+                                Toast.makeText(getActivity(),"Ingresa un correo electronico", Toast.LENGTH_LONG).show();
+                            }else{
+                                if (sTelefono.isEmpty()){
+                                    telefono.setError(getString(R.string.error_campo_obligatorio));
+                                   telefono.requestFocus();
+                                    Toast.makeText(getActivity(),"Ingresa un numero de telefono", Toast.LENGTH_LONG).show();
+                                }else{
+                                    String url = "https://motelesdepuebla.000webhostapp.com/apiregistrousuario.php?nombrecompleto="
+                                            + sNombrecompleto + "&usuario=" + sUsuario + "&clave=" + sClave + "&correoelectronico="
+                                            + sCorreoelectronico + "&telefono=" + sTelefono;
+                                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                                            Request.Method.GET, url, null,
+                                            new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
+                                                    Toast.makeText(view.getContext(), response.toString(),
+                                                            Toast.LENGTH_LONG).show();
+                                                    Navigation.findNavController(view).navigate(R.id.action_registrarseFragment_to_loginFragment);
+                                                }
+                                            }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Toast.makeText(view.getContext(),error.toString(),
+                                                    Toast.LENGTH_LONG). show();
+                                        }
+                                    }
+                                    );
+                                    queue.add(jsonObjectRequest);
+
+                                }
                             }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(view.getContext(),error.toString(),
-                                Toast.LENGTH_LONG). show();
+                        }
                     }
                 }
-                );
-                queue.add(jsonObjectRequest);
             }
         });
 
