@@ -1,16 +1,22 @@
 package com.example.motel;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -18,15 +24,27 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import Adapter.Adapter;
 
 
 public class FormularioMotelFragment extends Fragment {
-    EditText nombre, region, municipio, direccion, precios, horarios, servicios, telefono, paginaweb;
-    Button RegistrarMotel;
+    FloatingActionButton floatingActionButton;
+    ListView listView;
+    Adapter adapter;
 
+    public static ArrayList<Moteles>motelesArrayList=new ArrayList<>();
+    String URL = "https://motelesdepuebla.000webhostapp.com/mostralmotel.php";
+    Moteles moteles;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,109 +59,92 @@ public class FormularioMotelFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        nombre = view.findViewById(R.id.idNombre);
-        region = view.findViewById(R.id.idRegion);
-        municipio = view.findViewById(R.id.idMunicipio);
-        direccion = view.findViewById(R.id.idDireccion);
-        precios = view.findViewById(R.id.idPrecios);
-        horarios = view.findViewById(R.id.idHorarios);
-        servicios = view.findViewById(R.id.idServicios);
-        telefono = view.findViewById(R.id.idTelefono);
-        paginaweb = view.findViewById(R.id.idPaginaweb);
-        RegistrarMotel = view.findViewById(R.id.btnRegistrarMotel);
 
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        floatingActionButton = view.findViewById(R.id.fab);
+        listView = view.findViewById(R.id.listmostrar);
+        adapter = new Adapter( getActivity(),motelesArrayList);
+        listView.setAdapter(adapter);
 
-        RegistrarMotel.setOnClickListener(new View.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                String sNombre = nombre.getText().toString();
-                String sRegion = region.getText().toString();
-                String sMunicipio = municipio.getText().toString();
-                String sDireccion = direccion.getText().toString();
-                String sPrecios = precios.getText().toString();
-                String sHorarios = horarios.getText().toString();
-                String sServicios = servicios.getText().toString();
-                String sTelefono = telefono.getText().toString();
-                String sPaginaweb = paginaweb.getText().toString();
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
-                if(sNombre.isEmpty()){
-                    nombre.setError(getString(R.string.error_campo_obligatorio));
-                    nombre.requestFocus();
-                    Toast.makeText(getActivity(),"Ingresa tu nombre completo", Toast.LENGTH_LONG).show();
-                }else{
-                    if (sRegion.isEmpty()){
-                        region.setError(getString(R.string.error_campo_obligatorio));
-                        region.requestFocus();
-                        Toast.makeText(getActivity(),"Ingresa una region", Toast.LENGTH_LONG).show();
-                    }else {
-                        if (sMunicipio.isEmpty()) {
-                            municipio.setError(getString(R.string.error_campo_obligatorio));
-                            municipio.requestFocus();
-                            Toast.makeText(getActivity(), "Ingresa un municipio", Toast.LENGTH_LONG).show();
-                        } else {
-                            if (sDireccion.isEmpty()) {
-                                direccion.setError(getString(R.string.error_campo_obligatorio));
-                                direccion.requestFocus();
-                                Toast.makeText(getActivity(), "Ingresa una direccion", Toast.LENGTH_LONG).show();
-                            } else {
-                                if (sPrecios.isEmpty()) {
-                                    precios.setError(getString(R.string.error_campo_obligatorio));
-                                    precios.requestFocus();
-                                    Toast.makeText(getActivity(), "Ingresa una direccion", Toast.LENGTH_LONG).show();
-                                } else {
-                                    if (sHorarios.isEmpty()) {
-                                        horarios.setError(getString(R.string.error_campo_obligatorio));
-                                        horarios.requestFocus();
-                                        Toast.makeText(getActivity(), "Ingresa los horarios", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        if (sServicios.isEmpty()) {
-                                            servicios.setError(getString(R.string.error_campo_obligatorio));
-                                            servicios.requestFocus();
-                                            Toast.makeText(getActivity(), "Ingresa los horarios", Toast.LENGTH_LONG).show();
-                                        } else {
-                                            if (sTelefono.isEmpty()) {
-                                                telefono.setError(getString(R.string.error_campo_obligatorio));
-                                                telefono.requestFocus();
-                                                Toast.makeText(getActivity(), "Ingresa un numero de telefono", Toast.LENGTH_LONG).show();
-                                            } else {
-                                                if (sPaginaweb.isEmpty()) {
-                                                    paginaweb.setError(getString(R.string.error_campo_obligatorio));
-                                                    paginaweb.requestFocus();
-                                                    Toast.makeText(getActivity(), "Ingresa una pagina web", Toast.LENGTH_LONG).show();
-                                                } else {
-                                                    String url = "https://motelesdepuebla.000webhostapp.com/apiregistromotel.php?nombre="
-                                                            + sNombre + "&region=" + sRegion + "&municipio=" + sMunicipio + "&direccion="
-                                                            + sDireccion + "&precios=" + sPrecios + "&horarios=" + sHorarios + "&servicios="
-                                                            + sServicios + "&telefono=" + sTelefono + "&paginaweb=" + sPaginaweb;
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                ProgressDialog progressDialog = new ProgressDialog(view.getContext());
 
-                                                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                                                            Request.Method.GET, url, null,
-                                                            new Response.Listener<JSONObject>() {
-                                                                @Override
-                                                                public void onResponse(JSONObject response) {
-                                                                    Toast.makeText(view.getContext(), response.toString(),
-                                                                            Toast.LENGTH_LONG).show();
-                                                                }
-                                                            }, new Response.ErrorListener() {
-                                                        @Override
-                                                        public void onErrorResponse(VolleyError error) {
-                                                            Toast.makeText(view.getContext(), error.toString(),
-                                                                    Toast.LENGTH_LONG).show();
-                                                        }
-                                                    }
-                                                    );
-                                                    queue.add(jsonObjectRequest);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                CharSequence[] dialogoItem={"ver informacion","Editar informacion","Eliminar motel"};
+                builder.setTitle(motelesArrayList.get(position).getSnombre());
+                builder.setItems(dialogoItem, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i){
+                            case 0:
+                                Navigation.findNavController(view).navigate(R.id.action_formularioMotelFragment_to_detallesMotelFragment);
+                                break;
+                            case 1:
+                                Navigation.findNavController(view).navigate(R.id.action_formularioMotelFragment_to_editarMotelFragment);
+                                break;
+                            case 2:
+                                //EliminarDatos(motelesArrayList.get(position).getId());
+                                break;
                         }
                     }
-                }
+                });
+                builder.create().show();
             }
-   });
-}
+        });
+        ListarDatos();
+
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_formularioMotelFragment_to_agregarMotelFragment);
+            }
+        });
+    }
+
+    private void ListarDatos() {
+        StringRequest request = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        motelesArrayList.clear();
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String exito = jsonObject.getString("exito");
+                            JSONArray jsonArray = jsonObject.getJSONArray("datos");
+                            if (exito.equals("1")) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    String idMotel = object.getString("idMotel");
+                                    String nombre = object.getString("nombre");
+                                    String region = object.getString("region");
+                                    String municipio = object.getString("municipio");
+                                    String direccion = object.getString("direccion");
+                                    String precios = object.getString("precios");
+                                    String horarios = object.getString("horarios");
+                                    String servicios = object.getString("servicios");
+                                    String telefono = object.getString("telefono");
+                                    String paginaweb = object.getString("paginaweb");
+                                    moteles = new Moteles(idMotel, nombre, region, municipio,
+                                            direccion, precios, horarios, servicios, telefono, paginaweb);
+                                    motelesArrayList.add(moteles);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(request);
+    }
 }
