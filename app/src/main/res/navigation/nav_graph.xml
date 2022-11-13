@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/inicioFragment"
-        android:name="Fragments.InicioFragment"
+        android:name="com.example.motel.InicioFragment"
         android:label="fragment_inicio"
         tools:layout="@layout/fragment_inicio" >
         <action
@@ -19,12 +19,12 @@
     </fragment>
     <fragment
         android:id="@+id/motelesFragment"
-        android:name="Fragments.MotelesFragment"
+        android:name="com.example.motel.MotelesFragment"
         android:label="fragment_moteles"
         tools:layout="@layout/fragment_moteles" />
     <fragment
         android:id="@+id/loginFragment"
-        android:name="Fragments.LoginFragment"
+        android:name="com.example.motel.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -36,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/registrarseFragment"
-        android:name="Fragments.RegistrarseFragment"
+        android:name="com.example.motel.RegistrarseFragment"
         android:label="fragment_registrarse"
         tools:layout="@layout/fragment_registrarse" >
         <action
@@ -60,7 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/agregarMotelFragment"
-        android:name="Fragments.AgregarMotelFragment"
+        android:name="com.example.motel.AgregarMotelFragment"
         android:label="fragment_agregar_motel"
         tools:layout="@layout/fragment_agregar_motel" >
         <action
@@ -69,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/editarMotelFragment"
-        android:name="Fragments.EditarMotelFragment"
+        android:name="com.example.motel.EditarMotelFragment"
         android:label="fragment_editar_motel"
         tools:layout="@layout/fragment_editar_motel" >
         <action
@@ -78,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/detallesMotelFragment"
-        android:name="Fragments.DetallesMotelFragment"
+        android:name="com.example.motel.DetallesMotelFragment"
         android:label="fragment_detalles_motel"
         tools:layout="@layout/fragment_detalles_motel" />
 </navigation>

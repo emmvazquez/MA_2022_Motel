@@ -14,16 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,8 +31,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import Adapter.Adapter;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class FormularioMotelFragment extends Fragment {
@@ -72,7 +70,7 @@ public class FormularioMotelFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                 ProgressDialog progressDialog = new ProgressDialog(view.getContext());
 
-                CharSequence[] dialogoItem={"ver informacion","Editar informacion","Eliminar motel"};
+                CharSequence[] dialogoItem={"ver registro ","editar registro","Eliminar motel"};
                 builder.setTitle(motelesArrayList.get(position).getSnombre());
                 builder.setItems(dialogoItem, new DialogInterface.OnClickListener() {
                     @Override
@@ -85,7 +83,8 @@ public class FormularioMotelFragment extends Fragment {
                                 Navigation.findNavController(view).navigate(R.id.action_formularioMotelFragment_to_editarMotelFragment);
                                 break;
                             case 2:
-                                //EliminarDatos(motelesArrayList.get(position).getId());
+                                EliminarDatos(motelesArrayList.get(position).getIdMotel());
+
                                 break;
                         }
                     }
@@ -103,7 +102,37 @@ public class FormularioMotelFragment extends Fragment {
             }
         });
     }
+    //eliminar los datos de la base de datos
+    private  void EliminarDatos( final String idMotel) {
+        StringRequest request = new StringRequest(Request.Method.POST,
+                "https://motelesdepuebla.000webhostapp.com/eliminarmotel.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equalsIgnoreCase("datos eliminados")) {
+                            Toast.makeText(getActivity(), "eliminando", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "no se pudo eliminar", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getActivity(), "error", Toast.LENGTH_SHORT).show();
+                }
+            }) {
+            protected Map<String, String> getParams() throws AuthFailureError{
+                Map<String,String>params = new HashMap<>();
+                params.put("idMotel",idMotel);
 
+                return params;
+        }
+    };
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(request);
+
+    }
+    //mostrar los datos en un listview
     private void ListarDatos() {
         StringRequest request = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
