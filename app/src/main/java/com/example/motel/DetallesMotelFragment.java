@@ -20,10 +20,6 @@ public class DetallesMotelFragment extends Fragment {
     TextView tv1,tv2,tv3,tv4,tv5,tv6,tv7,tv8,tv9,tv10;
     int position;
 
-    public DetallesMotelFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,12 +28,7 @@ public class DetallesMotelFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detalles_motel, container, false);
-    }
-
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_detalles_motel, container, false);
 
         tv1 = view.findViewById(R.id.tdid);
         tv2 = view.findViewById(R.id.tdnombre);
@@ -53,7 +44,7 @@ public class DetallesMotelFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         position = intent.getExtras().getInt("position");
 
-        tv1.setText("idMotel: "+ FormularioMotelFragment.motelesArrayList.get(position).getIdMotel());
+        /*tv1.setText("idMotel: "+ FormularioMotelFragment.motelesArrayList.get(position).getIdMotel());
         tv2.setText("nombre: "+ FormularioMotelFragment.motelesArrayList.get(position).getSnombre());
         tv3.setText("direccion: "+ FormularioMotelFragment.motelesArrayList.get(position).getSdireccion());
         tv4.setText("municipio: "+ FormularioMotelFragment.motelesArrayList.get(position).getSmunicipio());
@@ -62,7 +53,12 @@ public class DetallesMotelFragment extends Fragment {
         tv7.setText("horarios: "+ FormularioMotelFragment.motelesArrayList.get(position).getShorarios());
         tv8.setText("servicios: "+ FormularioMotelFragment.motelesArrayList.get(position).getSservicios());
         tv9.setText("telefono: "+ FormularioMotelFragment.motelesArrayList.get(position).getStelefono());
-        tv10.setText("paginaweb: "+ FormularioMotelFragment.motelesArrayList.get(position).getSpaginaweb());
+        tv10.setText("paginaweb: "+ FormularioMotelFragment.motelesArrayList.get(position).getSpaginaweb());*/
+        return view;
+    }
+
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
     }
 }

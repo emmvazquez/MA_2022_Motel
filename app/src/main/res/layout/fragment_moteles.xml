@@ -6,136 +6,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MotelesFragment"
     android:background="#80D2F2">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="20dp"
+        android:elevation="50dp"
+        app:cardElevation="50dp"
+        android:layout_margin="20dp"
+        android:background="@color/white">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_margin="20dp"
-            android:layout_gravity="center"
-            android:elevation="50dp"
-            android:gravity="center_horizontal"
             android:background="@color/white">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
                 android:text="MOTELES DE PUEBLA"
                 android:textAlignment="center"
                 android:textSize="30dp"
                 android:textColor="#023859"
                 android:textStyle="bold"/>
-
-            <LinearLayout
+            <SearchView
+                android:id="@+id/etBuscar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:inputType="textPersonName"
+                android:background="@drawable/cuadro_formulario">
+            </SearchView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="1">
-                <Button
-                    android:id="@+id/btntodosmoteles"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:text="Ver todos los moteles"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="#8C0776"
-                    app:cornerRadius="20dp"/>
-                <Button
-                    android:id="@+id/btnpueblacapital"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:textSize="16dp"
-                    android:textColor="@color/white"
-                    android:text="PUEBLA CAPITAL"
-                    android:layout_weight="1"
-                    android:backgroundTint="#023859"
-                    app:cornerRadius="20dp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="1">
-                <Button
-                    android:id="@+id/btntehuacan"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textSize="16dp"
-                    android:textColor="@color/white"
-                    android:text="TEHUACAN"
-                    android:backgroundTint="#03738C"
-                    app:cornerRadius="20dp"/>
-                <Button
-                    android:id="@+id/btnciudadserdan"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"
-                    android:textSize="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/white"
-                    android:text="CIUDAD SERDAN"
-                    android:backgroundTint="#02731E"
-                    app:cornerRadius="20dp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="1">
-                <Button
-                    android:id="@+id/btnteziutlan"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textSize="16dp"
-                    android:textColor="@color/white"
-                    android:text="TEZIUTLAN"
-                    android:backgroundTint="#02731E"
-                    app:cornerRadius="20dp"/>
-                <Button
-                    android:id="@+id/btnhuauchinango"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"
-                    android:textSize="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/white"
-                    android:text="HUAUCHINANGO"
-                    android:backgroundTint="#03738C"
-                    app:cornerRadius="20dp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="1">
-                <Button
-                    android:id="@+id/btncholula"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textSize="16dp"
-                    android:textColor="@color/white"
-                    android:text="SAN PEDRO CHOLULA"
-                    android:backgroundTint="#023859"
-                    app:cornerRadius="20dp"/>
-                <Button
-                    android:id="@+id/btnizucar"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textSize="16dp"
-                    android:textColor="@color/white"
-                    android:text="IZUCAR DE MATAMOROS"
-                    android:backgroundTint="#8C0776"
-                    app:cornerRadius="20dp"/>
-            </LinearLayout>
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/white">
+            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </FrameLayout>

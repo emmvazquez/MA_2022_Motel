@@ -1,20 +1,18 @@
 package com.example.motel;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -22,6 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,12 +36,10 @@ import java.util.Map;
 
 public class FormularioMotelFragment extends Fragment {
     FloatingActionButton floatingActionButton;
-    ListView listView;
-    Adapter adapter;
+    RecyclerView recyclerView2;
+    ArrayList<Moteles>ListaMoteles2;
+    JsonObjectRequest jsonObjectRequest;
 
-    public static ArrayList<Moteles>motelesArrayList=new ArrayList<>();
-    String URL = "https://motelesdepuebla.000webhostapp.com/mostralmotel.php";
-    Moteles moteles;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,117 +49,54 @@ public class FormularioMotelFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_formulario_motel, container, false);
-    }
-
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+        View view = inflater.inflate(R.layout.fragment_formulario_motel, container, false);
+        ListaMoteles2 = new ArrayList<>();
         floatingActionButton = view.findViewById(R.id.fab);
-        listView = view.findViewById(R.id.listmostrar);
-        adapter = new Adapter( getActivity(),motelesArrayList);
-        listView.setAdapter(adapter);
+        recyclerView2 = view.findViewById(R.id.recyclerview2);
+        recyclerView2.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView2.setHasFixedSize(true);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                ProgressDialog progressDialog = new ProgressDialog(view.getContext());
-
-                CharSequence[] dialogoItem={"ver registro ","editar registro","Eliminar motel"};
-                builder.setTitle(motelesArrayList.get(position).getSnombre());
-                builder.setItems(dialogoItem, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        switch (i){
-                            case 0:
-                                Navigation.findNavController(view).navigate(R.id.action_formularioMotelFragment_to_detallesMotelFragment);
-                                break;
-                            case 1:
-                                Navigation.findNavController(view).navigate(R.id.action_formularioMotelFragment_to_editarMotelFragment);
-                                break;
-                            case 2:
-                                EliminarDatos(motelesArrayList.get(position).getIdMotel());
-
-                                break;
-                        }
-                    }
-                });
-                builder.create().show();
-            }
-        });
-        ListarDatos();
-
-
+        //abrir fragment de agregar
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_formularioMotelFragment_to_agregarMotelFragment);
             }
         });
+        ListarDatos2();
+        return view;
     }
-    //eliminar los datos de la base de datos
-    private  void EliminarDatos( final String idMotel) {
-        StringRequest request = new StringRequest(Request.Method.POST,
-                "https://motelesdepuebla.000webhostapp.com/eliminarmotel.php",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (response.equalsIgnoreCase("datos eliminados")) {
-                            Toast.makeText(getActivity(), "eliminando", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getActivity(), "no se pudo eliminar", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getActivity(), "error", Toast.LENGTH_SHORT).show();
-                }
-            }) {
-            protected Map<String, String> getParams() throws AuthFailureError{
-                Map<String,String>params = new HashMap<>();
-                params.put("idMotel",idMotel);
 
-                return params;
-        }
-    };
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.add(request);
-
-    }
     //mostrar los datos en un listview
-    private void ListarDatos() {
-        StringRequest request = new StringRequest(Request.Method.POST, URL,
-                new Response.Listener<String>() {
+    private void ListarDatos2() {
+        RequestQueue requestQueue;
+        requestQueue = Volley.newRequestQueue(getActivity());
+        String URL = "https://motelesdepuebla.000webhostapp.com/mostralmotel.php";
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, (JSONObject) null,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
-                        motelesArrayList.clear();
-
+                    public void onResponse(JSONObject response) {
+                        Moteles moteles2 = null;
+                        JSONArray jsonArray = response.optJSONArray("motel");
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            String exito = jsonObject.getString("exito");
-                            JSONArray jsonArray = jsonObject.getJSONArray("datos");
-                            if (exito.equals("1")) {
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject object = jsonArray.getJSONObject(i);
-                                    String idMotel = object.getString("idMotel");
-                                    String nombre = object.getString("nombre");
-                                    String region = object.getString("region");
-                                    String municipio = object.getString("municipio");
-                                    String direccion = object.getString("direccion");
-                                    String precios = object.getString("precios");
-                                    String horarios = object.getString("horarios");
-                                    String servicios = object.getString("servicios");
-                                    String telefono = object.getString("telefono");
-                                    String paginaweb = object.getString("paginaweb");
-                                    moteles = new Moteles(idMotel, nombre, region, municipio,
-                                            direccion, precios, horarios, servicios, telefono, paginaweb);
-                                    motelesArrayList.add(moteles);
-                                    adapter.notifyDataSetChanged();
-                                }
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                moteles2 = new Moteles();
+                                JSONObject jsonObject = null;
+                                jsonObject = jsonArray.getJSONObject(i);
+                                moteles2.setIdMotel(jsonObject.optInt("idMotel"));
+                                moteles2.setSnombre(jsonObject.optString("nombre"));
+                                moteles2.setSregion(jsonObject.optString("region"));
+                                moteles2.setSmunicipio(jsonObject.optString("municipio"));
+                                moteles2.setSdireccion(jsonObject.optString("direccion"));
+                                moteles2.setSprecios(jsonObject.optString("precios"));
+                                moteles2.setShorarios(jsonObject.optString("horarios"));
+                                moteles2.setSservicios(jsonObject.optString("servicios"));
+                                moteles2.setStelefono(jsonObject.optString("telefono"));
+                                moteles2.setSpaginaweb(jsonObject.optString("paginaweb"));
+                                ListaMoteles2.add(moteles2);
                             }
+                            AdapterMotel2 adapterMotel2 = new AdapterMotel2(ListaMoteles2);
+                            recyclerView2.setAdapter(adapterMotel2);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -173,7 +107,11 @@ public class FormularioMotelFragment extends Fragment {
                 Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.add(request);
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 }

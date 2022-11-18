@@ -1,5 +1,6 @@
 package com.example.motel;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,20 +15,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.motel.R;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class RegistrarseFragment extends Fragment {
     EditText nombrecompleto, usuario, clave, correoelectronico, telefono;
     Button RegistrarUsuario;
     String sNombrecompleto,sUsuario, sClave,sCorreoelectronico,sTelefono;
+    String URL = "https://motelesdepuebla.000webhostapp.com/registrarusuario.php";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,61 +67,71 @@ public class RegistrarseFragment extends Fragment {
                  sClave = clave.getText().toString();
                  sCorreoelectronico = correoelectronico.getText().toString();
                  sTelefono = telefono.getText().toString();
+                ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setMessage("cargando...");
 
                 if(sNombrecompleto.isEmpty()){
                     nombrecompleto.setError(getString(R.string.error_campo_obligatorio));
                     nombrecompleto.requestFocus();
-                    Toast.makeText(getActivity(),"Ingresa tu nombre completo", Toast.LENGTH_LONG).show();
+                   return;
+                }else if(sUsuario.isEmpty()){
+                    usuario.setError(getString(R.string.error_campo_obligatorio));
+                    usuario.requestFocus();
+                    return;
+                }else if(sClave.isEmpty()){
+                    clave.setError(getString(R.string.error_campo_obligatorio));
+                    clave.requestFocus();
+                    return;
+                }else if(sCorreoelectronico.isEmpty()){
+                    correoelectronico.setError(getString(R.string.error_campo_obligatorio));
+                    correoelectronico.requestFocus();
+                   return;
+                }else if (sTelefono.isEmpty()){
+                    telefono.setError(getString(R.string.error_campo_obligatorio));
+                    telefono.requestFocus();
+                    return;
                 }else{
-                    if (sUsuario.isEmpty()){
-                        usuario.setError(getString(R.string.error_campo_obligatorio));
-                        usuario.requestFocus();
-                        Toast.makeText(getActivity(),"Ingresa un usuario", Toast.LENGTH_LONG).show();
-                    }else{
-                        if (sClave.isEmpty()){
-                            clave.setError(getString(R.string.error_campo_obligatorio));
-                            clave.requestFocus();
-                            Toast.makeText(getActivity(),"Ingresa una contraseña", Toast.LENGTH_LONG).show();
-                        }else{
-                            if (sCorreoelectronico.isEmpty()){
-                                correoelectronico.setError(getString(R.string.error_campo_obligatorio));
-                                correoelectronico.requestFocus();
-                                Toast.makeText(getActivity(),"Ingresa un correo electronico", Toast.LENGTH_LONG).show();
-                            }else{
-                                if (sTelefono.isEmpty()){
-                                    telefono.setError(getString(R.string.error_campo_obligatorio));
-                                   telefono.requestFocus();
-                                    Toast.makeText(getActivity(),"Ingresa un numero de telefono", Toast.LENGTH_LONG).show();
-                                }else{
-                                    String url = "https://motelesdepuebla.000webhostapp.com/apiregistrousuario.php?nombrecompleto="
-                                            + sNombrecompleto + "&usuario=" + sUsuario + "&clave=" + sClave + "&correoelectronico="
-                                            + sCorreoelectronico + "&telefono=" + sTelefono;
-                                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                                            Request.Method.GET, url, null,
-                                            new Response.Listener<JSONObject>() {
-                                                @Override
-                                                public void onResponse(JSONObject response) {
-                                                    Toast.makeText(view.getContext(), response.toString(),
-                                                            Toast.LENGTH_LONG).show();
-                                                    Navigation.findNavController(view).navigate(R.id.action_registrarseFragment_to_loginFragment);
-                                                }
-                                            }, new Response.ErrorListener() {
+                                    progressDialog.show();
+                                    StringRequest request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            if (response.equalsIgnoreCase("datos registrados")) {
+                                                Toast.makeText(getActivity(), "datos registrados", Toast.LENGTH_SHORT).show();
+                                                progressDialog.dismiss();
+                                                onBackPressed();
+                                            } else {
+                                                Toast.makeText(getActivity(), response, Toast.LENGTH_SHORT).show();
+                                                progressDialog.dismiss();
+                                            }
+                                        }
+                                    }, new Response.ErrorListener() {
                                         @Override
                                         public void onErrorResponse(VolleyError error) {
-                                            Toast.makeText(view.getContext(),error.toString(),
-                                                    Toast.LENGTH_LONG). show();
+                                            Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                                            progressDialog.dismiss();
                                         }
                                     }
-                                    );
-                                    queue.add(jsonObjectRequest);
+                                    ){
+                                        protected Map<String, String> getParams() throws AuthFailureError{
+                                            Map<String, String> params = new HashMap<String, String>();
 
+                                            params.put("nombrecompleto",sNombrecompleto);
+                                            params.put("usuario",sUsuario);
+                                            params.put("clave",sClave);
+                                            params.put("correoelectronico",sCorreoelectronico);
+                                            params.put("telefono",sTelefono);
+
+                                            return params;
+                                        }
+                                    };
+                                    RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+                                    requestQueue.add(request);
                                 }
                             }
-                        }
-                    }
-                }
-            }
         });
 
+    }
+    public  void onBackPressed(){
+        super.getActivity().onBackPressed();
     }
 }

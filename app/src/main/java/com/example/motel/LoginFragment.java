@@ -37,7 +37,7 @@ public class LoginFragment extends Fragment {
     Button btniniciarsesion, btnregistrate;
     ProgressDialog progressDialog;
     RequestQueue requestQueue;
-    String HttpURI = "https://motelesdepuebla.000webhostapp.com/apiiniciarsesion.php";
+    String HttpURI = "https://motelesdepuebla.000webhostapp.com/iniciarsesion.php";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

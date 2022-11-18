@@ -38,11 +38,7 @@
         android:id="@+id/registrarseFragment"
         android:name="com.example.motel.RegistrarseFragment"
         android:label="fragment_registrarse"
-        tools:layout="@layout/fragment_registrarse" >
-        <action
-            android:id="@+id/action_registrarseFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_registrarse" />
     <fragment
         android:id="@+id/formularioMotelFragment"
         android:name="com.example.motel.FormularioMotelFragment"
@@ -62,11 +58,7 @@
         android:id="@+id/agregarMotelFragment"
         android:name="com.example.motel.AgregarMotelFragment"
         android:label="fragment_agregar_motel"
-        tools:layout="@layout/fragment_agregar_motel" >
-        <action
-            android:id="@+id/action_agregarMotelFragment_to_formularioMotelFragment"
-            app:destination="@id/formularioMotelFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_agregar_motel" />
     <fragment
         android:id="@+id/editarMotelFragment"
         android:name="com.example.motel.EditarMotelFragment"

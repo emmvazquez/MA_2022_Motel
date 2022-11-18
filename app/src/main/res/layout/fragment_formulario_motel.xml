@@ -7,14 +7,20 @@
     tools:context=".FormularioMotelFragment"
     android:background="#80D2F2">
 
-
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="20dp"
         android:layout_margin="20dp"
-        app:cardElevation="50dp">
+        app:cardElevation="50dp"
+        android:background="@color/white">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:backgroundTint="@color/white">
+        </androidx.recyclerview.widget.RecyclerView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
@@ -24,13 +30,5 @@
             android:src="@drawable/ic_registrar"
             android:elevation="30dp"
             android:layout_margin="20dp" />
-
-        <ListView
-            android:id="@+id/listmostrar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
-        </ListView>
-
     </androidx.cardview.widget.CardView>
 </FrameLayout>

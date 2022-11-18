@@ -1,14 +1,15 @@
 package com.example.motel;
 
 public class Moteles {
-
-    String idMotel, snombre,sregion,smunicipio,sdireccion,
+    int idMotel;
+    String snombre,sregion,smunicipio,sdireccion,
             sprecios,shorarios,sservicios,stelefono,spaginaweb;
 
     public Moteles() {
     }
 
-    public Moteles(String idMotel, String snombre, String sregion, String smunicipio, String sdireccion, String sprecios, String shorarios, String sservicios, String stelefono, String spaginaweb) {
+    public Moteles(int idMotel, String snombre, String sregion, String smunicipio, String sdireccion,
+                   String sprecios, String shorarios, String sservicios, String stelefono, String spaginaweb) {
         this.idMotel = idMotel;
         this.snombre = snombre;
         this.sregion = sregion;
@@ -21,11 +22,11 @@ public class Moteles {
         this.spaginaweb = spaginaweb;
     }
 
-    public String getIdMotel() {
+    public int getIdMotel() {
         return idMotel;
     }
 
-    public void setIdMotel(String idMotel) {
+    public void setIdMotel(int idMotel) {
         this.idMotel = idMotel;
     }
 
