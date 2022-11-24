@@ -2,8 +2,8 @@ package com.example.motel;
 
 public class Moteles {
     int idMotel;
-    String snombre,sregion,smunicipio,sdireccion,
-            sprecios,shorarios,sservicios,stelefono,spaginaweb;
+    String snombre,sregion,smunicipio,sdireccion, sprecios,
+            shorarios,sservicios,stelefono,spaginaweb;
 
     public Moteles() {
     }
@@ -20,6 +20,7 @@ public class Moteles {
         this.sservicios = sservicios;
         this.stelefono = stelefono;
         this.spaginaweb = spaginaweb;
+
     }
 
     public int getIdMotel() {

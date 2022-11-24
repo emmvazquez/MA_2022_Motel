@@ -37,8 +37,9 @@ import java.util.Map;
 public class FormularioMotelFragment extends Fragment {
     FloatingActionButton floatingActionButton;
     RecyclerView recyclerView2;
-    ArrayList<Moteles>ListaMoteles2;
+    public static ArrayList<Moteles>ListaMoteles2 = new ArrayList<>();
     JsonObjectRequest jsonObjectRequest;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,11 +51,13 @@ public class FormularioMotelFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_formulario_motel, container, false);
+
         ListaMoteles2 = new ArrayList<>();
         floatingActionButton = view.findViewById(R.id.fab);
         recyclerView2 = view.findViewById(R.id.recyclerview2);
         recyclerView2.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView2.setHasFixedSize(true);
+
 
         //abrir fragment de agregar
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +99,13 @@ public class FormularioMotelFragment extends Fragment {
                                 ListaMoteles2.add(moteles2);
                             }
                             AdapterMotel2 adapterMotel2 = new AdapterMotel2(ListaMoteles2);
+                            adapterMotel2.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Toast.makeText(getActivity().getApplicationContext(),"Seleccion:"+ListaMoteles2.
+                                            get(recyclerView2.getChildAdapterPosition(view)).getSnombre(),Toast.LENGTH_SHORT).show();
+                                }
+                            });
                             recyclerView2.setAdapter(adapterMotel2);
                         } catch (JSONException e) {
                             e.printStackTrace();
