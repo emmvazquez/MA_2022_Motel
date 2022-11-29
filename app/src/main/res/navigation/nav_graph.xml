@@ -21,7 +21,11 @@
         android:id="@+id/motelesFragment"
         android:name="com.example.motel.MotelesFragment"
         android:label="fragment_moteles"
-        tools:layout="@layout/fragment_moteles" />
+        tools:layout="@layout/fragment_moteles" >
+        <action
+            android:id="@+id/action_motelesFragment_to_contenedorMotelesFragment"
+            app:destination="@id/contenedorMotelesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.motel.LoginFragment"
@@ -73,4 +77,9 @@
         android:name="com.example.motel.DetallesMotelFragment"
         android:label="fragment_detalles_motel"
         tools:layout="@layout/fragment_detalles_motel" />
+    <fragment
+        android:id="@+id/contenedorMotelesFragment"
+        android:name="com.example.motel.ContenedorMotelesFragment"
+        android:label="fragment_contenedor_moteles"
+        tools:layout="@layout/fragment_contenedor_moteles" />
 </navigation>

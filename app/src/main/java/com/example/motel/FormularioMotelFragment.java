@@ -37,7 +37,7 @@ import java.util.Map;
 public class FormularioMotelFragment extends Fragment {
     FloatingActionButton floatingActionButton;
     RecyclerView recyclerView2;
-    public static ArrayList<Moteles>ListaMoteles2 = new ArrayList<>();
+    ArrayList<Moteles> ListaMoteles2;
     JsonObjectRequest jsonObjectRequest;
 
 
@@ -96,16 +96,10 @@ public class FormularioMotelFragment extends Fragment {
                                 moteles2.setSservicios(jsonObject.optString("servicios"));
                                 moteles2.setStelefono(jsonObject.optString("telefono"));
                                 moteles2.setSpaginaweb(jsonObject.optString("paginaweb"));
+                                moteles2.setSimagen(jsonObject.optString("foto"));
                                 ListaMoteles2.add(moteles2);
                             }
-                            AdapterMotel2 adapterMotel2 = new AdapterMotel2(ListaMoteles2);
-                            adapterMotel2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Toast.makeText(getActivity().getApplicationContext(),"Seleccion:"+ListaMoteles2.
-                                            get(recyclerView2.getChildAdapterPosition(view)).getSnombre(),Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                            AdapterMotel2 adapterMotel2 = new AdapterMotel2(ListaMoteles2, getContext());
                             recyclerView2.setAdapter(adapterMotel2);
                         } catch (JSONException e) {
                             e.printStackTrace();

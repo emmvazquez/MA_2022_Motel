@@ -9,32 +9,23 @@
     android:animateLayoutChanges="true"
     app:cardUseCompatPadding="true">
     <ImageView
-        android:id="@+id/tvimagen"
+        android:id="@+id/ivimagen"
         android:layout_width="100dp"
         android:layout_height="88dp"
-        android:src="@drawable/teziutlan">
+        >
     </ImageView>
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/txtnombre"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginStart="100dp"
             android:text="nombre"
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="20sp">
-        </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:gravity="center"
-            android:text="Acciones"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/black"
-            android:layout_marginEnd="10dp">
         </TextView>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

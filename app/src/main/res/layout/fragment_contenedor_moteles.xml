@@ -1,14 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContenedorMotelesFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ContenedorMotelesFragment"
+    android:orientation="vertical"
+    android:background="#80D2F2">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        app:cardCornerRadius="20dp"
+        android:layout_margin="20dp"
+        app:cardElevation="50dp">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/detallesimagen"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center">
+
+            </ImageView>
+            <TextView
+                android:id="@+id/detallesid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:gravity="center"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/detallesnombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="nombre"
+                android:gravity="center"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:id="@+id/detallesdireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="direccion"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:id="@+id/detallesmunicipio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="municipio"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:id="@+id/tdetallesregion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="region"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:id="@+id/detallesprecios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="precios"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:id="@+id/detalleshorarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="horarios"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:id="@+id/detalllesservicios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="servicios"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:id="@+id/detallestelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="telefono"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:id="@+id/detallespaginaweb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="paginaweb"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

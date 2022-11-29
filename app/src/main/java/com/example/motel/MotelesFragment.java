@@ -1,10 +1,13 @@
 package com.example.motel;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,12 +27,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MotelesFragment extends Fragment {
     RecyclerView recyclerView;
     ArrayList<Moteles>ListaMoteles;
     JsonObjectRequest jsonObjectRequest;
+
+    Activity actividad;
+    iComunicaFragments interfaceComunicaFragments;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +56,7 @@ public class MotelesFragment extends Fragment {
         ListarDatos();
         return view;
     }
+
 
     private void ListarDatos() {
         RequestQueue requestQueue;
@@ -75,10 +83,20 @@ public class MotelesFragment extends Fragment {
                                     moteles.setSservicios(jsonObject.optString("servicios"));
                                     moteles.setStelefono(jsonObject.optString("telefono"));
                                     moteles.setSpaginaweb(jsonObject.optString("paginaweb"));
+                                    moteles.setSimagen(jsonObject.optString("foto"));
                                     ListaMoteles.add(moteles);
                                 }
-                        AdapterMotel adapterMotel = new AdapterMotel(ListaMoteles);
+                        AdapterMotel adapterMotel = new AdapterMotel(ListaMoteles,getContext());
                         recyclerView.setAdapter(adapterMotel);
+
+                        adapterMotel.setOnclickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String nombre = ListaMoteles.get(recyclerView.getChildAdapterPosition(view)).getSnombre();
+                                Toast.makeText(getContext(), "Seleccion:"+nombre,Toast.LENGTH_SHORT).show();
+                                interfaceComunicaFragments.enviarmotel(ListaMoteles.get(recyclerView.getChildAdapterPosition(view)));
+                            }
+                        });
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -92,6 +110,21 @@ public class MotelesFragment extends Fragment {
 
         requestQueue.add(jsonObjectRequest);
     }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof  Activity){
+            this.actividad = (Activity) context;
+            interfaceComunicaFragments = (iComunicaFragments) this.actividad;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

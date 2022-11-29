@@ -1,15 +1,17 @@
 package com.example.motel;
 
-public class Moteles {
+import java.io.Serializable;
+
+public class Moteles implements Serializable {
     int idMotel;
     String snombre,sregion,smunicipio,sdireccion, sprecios,
-            shorarios,sservicios,stelefono,spaginaweb;
+            shorarios,sservicios,stelefono,spaginaweb, simagen;
 
     public Moteles() {
     }
 
     public Moteles(int idMotel, String snombre, String sregion, String smunicipio, String sdireccion,
-                   String sprecios, String shorarios, String sservicios, String stelefono, String spaginaweb) {
+                   String sprecios, String shorarios, String sservicios, String stelefono, String spaginaweb,String simagen) {
         this.idMotel = idMotel;
         this.snombre = snombre;
         this.sregion = sregion;
@@ -20,6 +22,7 @@ public class Moteles {
         this.sservicios = sservicios;
         this.stelefono = stelefono;
         this.spaginaweb = spaginaweb;
+        this.simagen= simagen;
 
     }
 
@@ -101,5 +104,13 @@ public class Moteles {
 
     public void setSpaginaweb(String spaginaweb) {
         this.spaginaweb = spaginaweb;
+    }
+
+    public String getSimagen() {
+        return simagen;
+    }
+
+    public void setSimagen(String simagen) {
+        this.simagen = simagen;
     }
 }

@@ -20,13 +20,13 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
 
-public class AdapterMotel2 extends RecyclerView.Adapter<AdapterMotel2.ViewHolder> implements View.OnClickListener{
+public class AdapterMotel2 extends RecyclerView.Adapter<AdapterMotel2.ViewHolder> {
     ArrayList<Moteles> ListaMoteles2;
-    private View.OnClickListener listener;
+    Context context;
 
-    public AdapterMotel2(ArrayList<Moteles> listaMoteles2) {
-        ListaMoteles2 = listaMoteles2;
-
+    public AdapterMotel2(ArrayList<Moteles> listaMoteles2, Context context) {
+        this.ListaMoteles2 = listaMoteles2;
+        this.context=context;
     }
 
     @NonNull
@@ -34,16 +34,41 @@ public class AdapterMotel2 extends RecyclerView.Adapter<AdapterMotel2.ViewHolder
     public AdapterMotel2.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.list_moteles, null, false);
-        view.setOnClickListener(this);
+        RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(layoutParams);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AdapterMotel2.ViewHolder holder, int position) {
-        holder.tvNombre.setText(ListaMoteles2.get(position).getSnombre());
+        holder.tvNombre.setText(ListaMoteles2.get(position).getSnombre().toString());
+        
+        if (ListaMoteles2.get(position).getSimagen()!=null){
+            cargarImagenWebService(ListaMoteles2.get(position).getSimagen(),holder);
+        }else {
+            holder.imImagen.setImageResource(R.drawable.teziutlan);
+        }
 
     }
 
+    private void cargarImagenWebService(String simagen, final ViewHolder holder) {
+        String urlImagen=simagen;
+        urlImagen=urlImagen.replace(" ","%20");
+        ImageRequest imageRequest = new ImageRequest(urlImagen, new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap response) {
+                holder.imImagen.setImageBitmap(response);
+            }
+        }, 0, 0, ImageView.ScaleType.CENTER, null, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context,"Error al cargar la imagen",Toast.LENGTH_SHORT).show();
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(imageRequest);
+    }
 
 
     @Override
@@ -51,23 +76,13 @@ public class AdapterMotel2 extends RecyclerView.Adapter<AdapterMotel2.ViewHolder
         return ListaMoteles2.size();
     }
 
-    public void setOnClickListener(View.OnClickListener listener){
-        this.listener=listener;
-    }
-
-    @Override
-    public void onClick(View view) {
-        if(listener!=null){
-            listener.onClick(view);
-        }
-
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView imImagen;
         TextView tvNombre;
 
         public ViewHolder(@NonNull View itemView){
             super((itemView));
+            imImagen =(ImageView) itemView.findViewById(R.id.ivimagen);
             tvNombre =(TextView) itemView.findViewById(R.id.txtnombre);
 
         }

@@ -44,16 +44,6 @@ public class DetallesMotelFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         position = intent.getExtras().getInt("position");
 
-        tv1.setText("idMotel: "+ FormularioMotelFragment.ListaMoteles2.get(position).getIdMotel());
-        tv2.setText("nombre: "+ FormularioMotelFragment.ListaMoteles2.get(position).getSnombre());
-        tv3.setText("direccion: "+ FormularioMotelFragment.ListaMoteles2.get(position).getSdireccion());
-        tv4.setText("municipio: "+ FormularioMotelFragment.ListaMoteles2.get(position).getSmunicipio());
-        tv5.setText("region: "+ FormularioMotelFragment.ListaMoteles2.get(position).getSregion());
-        tv6.setText("precios: "+ FormularioMotelFragment.ListaMoteles2.get(position).getSprecios());
-        tv7.setText("horarios: "+ FormularioMotelFragment.ListaMoteles2.get(position).getShorarios());
-        tv8.setText("servicios: "+ FormularioMotelFragment.ListaMoteles2.get(position).getSservicios());
-        tv9.setText("telefono: "+ FormularioMotelFragment.ListaMoteles2.get(position).getStelefono());
-        tv10.setText("paginaweb: "+ FormularioMotelFragment.ListaMoteles2.get(position).getSpaginaweb());
         return view;
     }
 

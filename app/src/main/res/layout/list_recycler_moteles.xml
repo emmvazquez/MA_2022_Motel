@@ -9,20 +9,20 @@
     app:cardUseCompatPadding="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
+        android:id="@+id/ivimagenpublica"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:src="@drawable/teziutlan"
         android:scaleType="centerCrop"/>
     <TextView
         android:id="@+id/txtNombre"
-        android:layout_width="match_parent"
+        android:layout_width="397dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="#8c000000"
         android:padding="10dp"
         android:text="Nombre"
         android:textColor="#ffe3e3e3"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:textStyle="bold"></TextView>
     <TextView
         android:id="@+id/txtMunicipio"
